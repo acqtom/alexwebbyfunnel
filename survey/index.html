@@ -83,9 +83,6 @@
     .nav-btn:disabled { opacity: .35; cursor: default; }
 
     /* ---------- Done ---------- */
-    .done { text-align: center; }
-    .done h1 { max-width: none; font-size: 32px; }
-    .done .note { font-size: 15px; max-width: 440px; margin: 14px auto 0; }
 
     @media (max-width: 480px) {
       h1 { font-size: 23px; }
@@ -185,13 +182,10 @@
       { id: "job", column: "Job?", progress: 83, type: "single",
         question: "Do you currently have a job?",
         options: [["person", "Yes, I have a job"], ["laptop", "I'm a freelancer"], ["building", "I own a business"], ["couch", "No, I don't have a job"]] },
-      { id: "income_goal", column: "Monthly income?", progress: 85, type: "single",
+      // notQualified: indexes of answers that send the person to /completeformnot
+      { id: "income_goal", column: "Monthly income?", progress: 85, type: "single", notQualified: [0],
         question: "How much would it take each month to replace your current income?",
         options: [["sprout", "$0 – $1,000 / month"], ["trend", "$1,000 – $5,000 / month"], ["briefcase", "$5,000 – $10,000 / month"], ["crown", "$10,000+ / month"]] },
-      { id: "budget", column: "Budget?", progress: 87, type: "single", wide: true,
-        question: "Do you have a budget to invest in tools, editors, or coaching to fast-track your channel?",
-        note: "Your answers are confidential and only used to tailor a plan to your situation.",
-        options: [["ban", "No, it's not something I'd invest in right now"], ["sprout", "Yes, a small budget: $100–$300"], ["trend", "Yes, a medium budget: $300–$1,000"], ["crown", "Yes, it's my MAIN priority: $1,000+"]] },
       { id: "bought_course", column: "Online program before?", progress: 90, type: "single",
         question: "Have you ever bought an online program or course?",
         options: [["yes", "Yes"], ["no", "No"]] },
@@ -277,13 +271,12 @@
       STEPS.forEach(step => { if (step.id in answers) row[step.column] = answers[step.id]; });
       sendToSheet("Survey", row);
       setProgress(100);
-      continueBtn.hidden = true;
+      continueBtn.disabled = true;
+
+      const qualified = !STEPS.some(step => step.notQualified &&
+        step.notQualified.some(i => answers[step.id] === step.options[i][1]));
       const name = firstName();
-      stepEl.innerHTML = `
-        <section class="step done">
-          <h1>${name ? `${name}, you're` : "You're"} <span class="marker">all set!</span></h1>
-          <p class="note">Your spot is saved. Keep an eye on your inbox for the joining link and your <strong>[free bonus]</strong>.</p>
-        </section>`;
+      location.href = funnelUrl(qualified ? "completeformqualified" : "completeformnot", name ? { name } : null);
     }
 
     continueBtn.addEventListener("click", () => {

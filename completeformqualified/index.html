@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online masterclass</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/funnel.css" />
+  <style>
+    .container { text-align: center; padding-top: 120px; }
+    h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.6px; }
+  </style>
+</head>
+<body>
+  <!-- Qualified leads: replacement income above $1,000 / month -->
+  <main class="hero">
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="container">
+      <h1><span id="greeting">You're</span> <span class="marker">all set!</span></h1>
+    </div>
+  </main>
+
+  <script src="../assets/event.js"></script>
+  <script src="../assets/funnel.js"></script>
+  <script>
+    const name = firstName();
+    if (name) document.getElementById("greeting").textContent = `${name}, you're`;
+  </script>
+</body>
+</html>
