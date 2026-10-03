@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online masterclass</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #1b222c;
+      --sky-top: #1c2533;
+      --sky-mid: #26324a;
+      --card: rgba(30, 37, 48, 0.88);
+      --card-border: rgba(255, 255, 255, 0.28);
+      --input-bg: rgba(255, 255, 255, 0.04);
+      --input-border: rgba(255, 255, 255, 0.22);
+      --text: #ffffff;
+      --text-dim: rgba(255, 255, 255, 0.78);
+      --text-faint: rgba(255, 255, 255, 0.55);
+      --blue: #0b5cff;
+      --blue-dark: #0846c7;
+      --yellow: #ffd84d;
+      --placeholder: #2c3542;
+      --placeholder-line: rgba(255, 255, 255, 0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Figtree", system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    button { font: inherit; cursor: pointer; }
+
+    /* ---------- Top bar ---------- */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: #e6e7ec;
+      border-bottom: 1px solid #d3d5db;
+    }
+    .topbar-inner {
+      max-width: 572px; margin: 0 auto; padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 11px; }
+    .brand-logo { width: 33px; height: 33px; object-fit: contain; flex-shrink: 0; }
+    .topbar-title { color: #111; font-weight: 700; font-size: 16px; line-height: 1.15; }
+    .topbar-sub { color: #444; font-size: 13px; letter-spacing: 0.2px; }
+    .btn-pill {
+      background: var(--blue); color: #fff; border: 0;
+      border-radius: 999px; padding: 10px 24px;
+      font-size: 16px; font-weight: 500;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .btn-pill:hover { background: var(--blue-dark); }
+
+    /* ---------- Hero background ---------- */
+    .hero {
+      position: relative;
+      background:
+        radial-gradient(ellipse 30% 45% at 92% 38%, rgba(190, 175, 205, 0.55), transparent 70%),
+        radial-gradient(ellipse 22% 30% at 84% 60%, rgba(220, 175, 150, 0.35), transparent 70%),
+        radial-gradient(ellipse 30% 40% at 4% 62%, rgba(120, 135, 165, 0.45), transparent 70%),
+        radial-gradient(ellipse 35% 25% at 30% 85%, rgba(110, 125, 155, 0.30), transparent 70%),
+        radial-gradient(ellipse 25% 18% at 80% 88%, rgba(190, 165, 160, 0.30), transparent 70%),
+        linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, #2a3550 80%, var(--bg) 100%);
+      overflow: hidden;
+    }
+    .stars { position: absolute; inset: 0; pointer-events: none; }
+    .star {
+      position: absolute; border-radius: 50%; background: #fff;
+      opacity: .7;
+    }
+    .sparkle {
+      position: absolute; left: 22%; top: 13%;
+      width: 34px; height: 34px; pointer-events: none;
+    }
+    .sparkle::before, .sparkle::after {
+      content: ""; position: absolute; left: 50%; top: 50%;
+      background: #fff; transform: translate(-50%, -50%);
+      border-radius: 2px; box-shadow: 0 0 8px 2px rgba(255,255,255,.5);
+    }
+    .sparkle::before { width: 2px; height: 34px; }
+    .sparkle::after { width: 34px; height: 2px; }
+
+    .container {
+      position: relative; z-index: 1;
+      max-width: 584px; margin: 0 auto; padding: 0 16px;
+    }
+
+    /* ---------- Headline ---------- */
+    .headline { padding: 34px 14px 0; }
+    .eyebrow { font-size: 19px; color: var(--text-dim); margin-bottom: 8px; }
+    h1 {
+      font-size: 36px; font-weight: 800; line-height: 1.28; letter-spacing: -0.8px;
+    }
+    .marker {
+      position: relative; display: inline; color: #111;
+      background: var(--yellow);
+      padding: 0 5px;
+      border-radius: 3px 6px 4px 7px;
+      box-decoration-break: clone; -webkit-box-decoration-break: clone;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #9b7bff 0%, #c27cf2 45%, #f08fb3 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* ---------- Host row ---------- */
+    .host { display: flex; gap: 12px; align-items: flex-end; margin-top: 30px; padding: 0 14px; }
+    .host-photo {
+      width: 80px; height: 96px; flex-shrink: 0;
+      object-fit: contain; object-position: center bottom;
+    }
+    .host-copy { font-size: 14px; color: var(--text-dim); line-height: 1.75; }
+    .host-copy strong { color: #fff; font-weight: 700; }
+    .host-copy em { font-size: 1em; }
+    .host-text { flex: 1; min-width: 0; }
+    /* Each .line stays on one row; fitLines() shrinks the font until it fits */
+    .line { display: block; width: max-content; white-space: nowrap; }
+    .stats { display: flex; gap: 22px; margin-top: 6px; flex-wrap: wrap; }
+    .stat { display: flex; align-items: center; gap: 7px; }
+    .stat-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 10px; font-weight: 800; color: #fff;
+      background: #0d0d0d;
+    }
+    .stat-icon.yt { width: 30px; height: 22px; border-radius: 0; background: none; }
+    .stat-num { font-weight: 700; font-size: 15px; line-height: 1; color: #fff; }
+    .stat-label { font-size: 9px; color: var(--text-faint); line-height: 1.3; }
+
+    /* ---------- Form card ---------- */
+    .form-card {
+      scroll-margin-top: 76px;
+      margin-top: 24px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 26px 28px 22px;
+      backdrop-filter: blur(6px);
+    }
+    .form-card h2 {
+      text-align: center; font-size: 19px; font-weight: 700; margin-bottom: 18px;
+    }
+    .field {
+      display: block; width: 100%;
+      height: 50px; padding: 0 18px;
+      margin-bottom: 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      color: #fff; font: inherit; font-size: 15px;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .field::placeholder { color: rgba(255,255,255,.85); }
+    .field:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(11,92,255,.25); }
+    .phone {
+      display: flex; height: 50px; margin-bottom: 14px;
+      border: 1px solid var(--input-border); border-radius: 10px;
+      background: var(--input-bg); overflow: hidden;
+    }
+    .phone:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(11,92,255,.25); }
+    .phone select {
+      appearance: none; -webkit-appearance: none;
+      background: transparent; border: 0; color: #fff;
+      font: inherit; font-size: 14px; font-weight: 600;
+      padding: 0 30px 0 16px;
+      border-right: 1px solid var(--input-border);
+      background-image: linear-gradient(45deg, transparent 50%, #aaa 50%), linear-gradient(135deg, #aaa 50%, transparent 50%);
+      background-position: calc(100% - 15px) 22px, calc(100% - 11px) 22px;
+      background-size: 4px 4px; background-repeat: no-repeat;
+      outline: none; cursor: pointer;
+    }
+    .phone select option { color: #111; }
+    .phone input {
+      flex: 1; min-width: 0; background: transparent; border: 0;
+      color: #fff; font: inherit; font-size: 15px; padding: 0 14px; outline: none;
+    }
+    .phone input::placeholder { color: rgba(255,255,255,.85); }
+
+    .btn-primary {
+      width: 100%; height: 52px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: var(--blue); color: #fff;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 10px;
+      font-size: 17px; font-weight: 700;
+      box-shadow: 0 3px 0 rgba(11, 92, 255, .45), 0 6px 18px rgba(11, 92, 255, .25);
+      text-decoration: none;
+      transition: background .15s, transform .05s;
+    }
+    .btn-primary:hover { background: var(--blue-dark); }
+    .btn-primary:active { transform: translateY(1px); }
+    .btn-logo {
+      width: 28px; height: 28px; border-radius: 8px; background: #fff;
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .btn-logo img { width: 20px; height: 20px; object-fit: contain; }
+    .event-time { text-align: center; margin-top: 16px; font-weight: 700; font-size: 15px; color: var(--text-dim); }
+    .form-msg { text-align: center; margin-top: 10px; font-size: 14px; color: #7ee2a8; display: none; }
+
+    /* ---------- Testimonials ---------- */
+    .section-title {
+      font-size: 21px; line-height: 1.4; color: var(--text-dim);
+      margin: 48px 0 24px; padding-right: 160px;
+    }
+    .section-title strong { color: #fff; font-weight: 800; }
+    .section-title .marker { color: #111; font-weight: 500; }
+
+    .carousel { position: relative; margin-right: -16px; }
+    .track {
+      display: flex; gap: 12px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; padding-right: 16px;
+    }
+    .track::-webkit-scrollbar { display: none; }
+    .slide {
+      flex: 0 0 300px; scroll-snap-align: start;
+      background: #0d0f13; border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px; padding: 14px 12px 12px;
+    }
+    .slide-head { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; }
+    .slide-head strong { color: #fff; }
+    .slide-img { height: 228px; border-radius: 8px; position: relative; }
+    .stack { background: #000; border: 1px solid rgba(255,255,255,.12); overflow: hidden; }
+    .stack-back {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: right 20%;
+    }
+    .stack-front {
+      position: absolute; left: 8%; right: 8%; bottom: 10px; width: 84%;
+      border-radius: 8px; border: 2px solid rgba(255,255,255,.9);
+      box-shadow: 0 10px 24px rgba(0,0,0,.65);
+      transform: rotate(-2deg);
+    }
+    .single { background: #000; border: 1px solid rgba(255,255,255,.12); overflow: hidden; }
+    .single img { width: 100%; height: 100%; object-fit: contain; }
+    .expand {
+      position: absolute; right: 10px; bottom: 10px; z-index: 2;
+      width: 26px; height: 26px; border-radius: 6px;
+      background: #1c1f26; border: 1px solid rgba(255,255,255,.4);
+      display: grid; place-items: center; color: #fff; font-size: 13px;
+    }
+    .expand-top { top: 10px; bottom: auto; }
+    .expand:hover { background: #2a2f39; }
+
+    .lightbox {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(5, 8, 12, .88);
+      overflow-y: auto; padding: 40px 16px; cursor: zoom-out;
+    }
+    .lightbox[hidden] { display: none; }
+    .lightbox-inner { max-width: 900px; margin: 0 auto; display: grid; gap: 16px; justify-items: center; }
+    .lightbox-inner img { max-width: 100%; max-height: 85vh; border-radius: 10px; cursor: default; }
+    .lightbox-close {
+      position: fixed; top: 14px; right: 16px;
+      width: 38px; height: 38px; border-radius: 50%; border: 0;
+      background: rgba(255,255,255,.12); color: #fff; font-size: 22px; line-height: 1;
+    }
+    .progress { margin-top: 16px; height: 5px; width: 100%; max-width: 552px; position: relative; }
+    .progress-bar {
+      position: absolute; left: 0; top: 0; height: 100%;
+      width: 15%; background: #3c4553; border-radius: 3px;
+      transition: left .2s;
+    }
+    .carousel-nav {
+      display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+      margin-top: 8px;
+    }
+    .counter { font-size: 12px; color: var(--text-dim); margin-right: 4px; }
+    .nav-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: transparent; border: 1px solid rgba(255,255,255,.35);
+      color: #fff; display: grid; place-items: center;
+      transition: opacity .15s, background .15s;
+    }
+    .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,.06); }
+    .nav-btn:disabled { opacity: .3; cursor: default; border-color: rgba(255,255,255,.15); }
+
+    /* ---------- Shared placeholders ---------- */
+    .ph {
+      background:
+        repeating-linear-gradient(45deg, transparent 0 10px, rgba(255,255,255,.03) 10px 20px),
+        var(--placeholder);
+      border: 1px dashed var(--placeholder-line);
+      display: grid; place-items: center;
+      color: var(--text-faint); font-size: 12px; text-align: center;
+      padding: 6px;
+    }
+
+    .cta-block { margin-top: 28px; }
+
+    /* ---------- Video ---------- */
+    .video-title {
+      text-align: center; font-size: 21px; line-height: 1.6; color: var(--text-dim);
+      margin: 36px auto 22px; max-width: 540px;
+    }
+    .video-title .marker { color: #111; }
+    .video {
+      position: relative; aspect-ratio: 16 / 9; width: 100%;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+    .video .ph { width: 100%; height: 100%; border: 0; font-size: 14px; }
+    .play {
+      position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%);
+      width: 106px; height: 68px; border-radius: 8px; border: 0;
+      background: rgba(84, 20, 220, .92);
+      display: grid; place-items: center;
+    }
+    .play svg { width: 26px; height: 26px; }
+    .video-bar {
+      position: absolute; left: 2px; right: 2px; bottom: 2px;
+      height: 32px; border-radius: 0 0 8px 8px;
+      background: rgba(84, 20, 220, .92);
+      display: flex; align-items: center; gap: 10px; padding: 0 10px;
+      font-size: 13px; font-weight: 600;
+    }
+    .video-track { flex: 1; height: 2px; background: rgba(255,255,255,.55); position: relative; }
+    .video-track span {
+      position: absolute; top: 50%; width: 6px; height: 6px; border-radius: 50%;
+      border: 1px solid #fff; background: rgba(84, 20, 220, 1);
+      transform: translate(-50%, -50%);
+    }
+    .video-caption {
+      position: absolute; left: 0; right: 0; bottom: 38px;
+      text-align: center; font-size: 13px; color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,.8);
+    }
+    .vb-icon { width: 18px; height: 18px; }
+
+    .page-end { height: 60px; }
+
+    /* ---------- Mobile ---------- */
+    @media (max-width: 560px) {
+      .topbar-title { font-size: 15px; }
+      .topbar-sub { font-size: 12px; }
+      .btn-pill { padding: 9px 18px; font-size: 15px; }
+      .headline, .host { padding-left: 0; padding-right: 0; }
+      .eyebrow { font-size: 17px; }
+      h1 { font-size: 29px; }
+      .host { align-items: flex-start; }
+      .host-photo { width: 64px; height: 80px; }
+      .stats { gap: 12px 16px; }
+      .form-card { padding: 22px 16px 18px; }
+      .form-card h2 { font-size: 17px; }
+      .section-title { padding-right: 0; font-size: 19px; }
+      .slide { flex-basis: 82%; }
+      .video-title { font-size: 18px; }
+      .play { width: 76px; height: 50px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky top bar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <img class="brand-logo" src="../assets/webinarjam-icon.png" alt="WebinarJam" />
+        <div>
+          <div class="topbar-title">Starts in <span id="countdown">1d 23h</span></div>
+          <div class="topbar-sub">Free live YouTube faceless automation workshop</div>
+        </div>
+      </div>
+      <a class="btn-pill js-register" href="#register">Register</a>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="sparkle" aria-hidden="true"></div>
+
+    <div class="container">
+
+      <!-- Headline -->
+      <section class="headline">
+        <p class="eyebrow">Get the complete guide to</p>
+        <h1 class="fit">
+          <span class="line">Build a <span class="marker">full-time online career</span></span>
+          <span class="line"><span class="gradient-text">from YouTube Faceless Automation</span></span>
+        </h1>
+      </section>
+
+      <!-- Host + social proof -->
+      <section class="host">
+        <img class="host-photo" src="../assets/host.png" alt="Host" />
+        <div class="host-text">
+          <p class="host-copy fit">
+            <span class="line">...with a 19 year-old who grew <strong>8x monetized accounts to over 400M views</strong></span>
+            <em class="line">(and $300k+/year in passive income)</em>
+          </p>
+          <div class="stats">
+            <div class="stat">
+              <svg class="stat-icon yt" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#ff0000"/><path d="M11 5.5v9l8-4.5z" fill="#fff"/></svg>
+              <div><div class="stat-num">55K</div><div class="stat-label">subscribers</div></div>
+            </div>
+            <div class="stat">
+              <svg class="stat-icon yt" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#ff0000"/><path d="M11 5.5v9l8-4.5z" fill="#fff"/></svg>
+              <div><div class="stat-num">120K</div><div class="stat-label">subscribers</div></div>
+            </div>
+            <div class="stat">
+              <svg class="stat-icon yt" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#ff0000"/><path d="M11 5.5v9l8-4.5z" fill="#fff"/></svg>
+              <div><div class="stat-num">50K</div><div class="stat-label">subscribers</div></div>
+            </div>
+            <div class="stat">
+              <svg class="stat-icon yt" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#ff0000"/><path d="M11 5.5v9l8-4.5z" fill="#fff"/></svg>
+              <div><div class="stat-num">200K</div><div class="stat-label">subscribers</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Registration form -->
+      <section class="form-card" id="register">
+        <h2>[Form headline / free offer] 🎁 👇</h2>
+        <form id="reg-form" novalidate>
+          <input class="field" type="text" name="name" placeholder="Full name" autocomplete="name" required />
+          <input class="field" type="email" name="email" placeholder="Email address" autocomplete="email" required />
+          <div class="phone">
+            <select name="country_code" aria-label="Country code">
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+1">🇨🇦 +1</option>
+              <option value="+353">🇮🇪 +353</option>
+              <option value="+64">🇳🇿 +64</option>
+            </select>
+            <input type="tel" name="phone" placeholder="Phone number" autocomplete="tel-national" />
+          </div>
+          <button class="btn-primary" type="submit">
+            <span class="btn-logo" aria-hidden="true"><img src="../assets/webinarjam-icon.png" alt="" /></span>
+            Register for free
+          </button>
+          <p class="form-msg" id="form-msg"></p>
+        </form>
+        <p class="event-time" id="event-time">[Day, Month DD · 0:00 PM TZ]</p>
+      </section>
+
+      <!-- Testimonials carousel -->
+      <h3 class="section-title">
+        The system <strong>100+ faceless creators</strong> used to build
+        <span class="marker">an online income</span>.
+      </h3>
+
+      <div class="carousel">
+        <div class="track" id="track">
+          <!-- Slides are generated below; edit SLIDES in the script -->
+        </div>
+      </div>
+      <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+      <div class="carousel-nav">
+        <span class="counter" id="counter">1 / 10</span>
+        <button class="nav-btn" id="prev" aria-label="Previous">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="nav-btn" id="next" aria-label="Next">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="cta-block">
+        <a class="btn-primary js-register" href="#register">Register for free</a>
+      </div>
+
+      <!-- Video -->
+      <h3 class="video-title">
+        <span class="marker">Watch this short video</span> to learn how this live workshop will speedrun you to your first YouTube payout 👇
+      </h3>
+      <div class="video">
+        <div class="ph">VSL video placeholder (16:9)</div>
+        <div class="video-caption">[Caption text]</div>
+        <button class="play" aria-label="Play video">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg>
+        </button>
+        <div class="video-bar">
+          <span>0:00</span>
+          <div class="video-track">
+            <span style="left:0%"></span><span style="left:9%"></span><span style="left:32%"></span>
+            <span style="left:61%"></span><span style="left:73%"></span><span style="left:85%"></span>
+          </div>
+          <svg class="vb-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          <svg class="vb-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><rect x="7" y="8" width="10" height="8" rx="1"/></svg>
+        </div>
+      </div>
+
+      <div class="cta-block">
+        <a class="btn-primary js-register" href="#register">Register for free</a>
+      </div>
+
+      <div class="page-end"></div>
+    </div>
+  </main>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" aria-label="Close">×</button>
+    <div class="lightbox-inner"></div>
+  </div>
+
+  <script src="../assets/event.js"></script>
+  <script src="../assets/sheet.js"></script>
+  <script>
+    // ---- Config: edit these ----
+    // `images`: one screenshot, or [back, front] to stack two
+    const SLIDES = [
+      { name: "Felix", result: "$12k USD / month", images: ["../assets/felix-revenue.jpg", "../assets/felix-call.jpg"] },
+      { name: "Ali", result: "Monetized in 45 days", images: ["../assets/students/ali.jpg"] },
+      { name: "Caleb", result: "$1,408 in 7 days", images: ["../assets/students/caleb.jpg"] },
+      { name: "Ethan", result: "84 million views", images: ["../assets/students/ethan.jpg"] },
+      { name: "Gabriel", result: "$7.9k / month", images: ["../assets/students/gabriel.jpg"] },
+      { name: "Jax", result: "$8,000 / month", images: ["../assets/students/jax.jpg"] },
+      { name: "Jibrail", result: "$2,653 in 30 days", images: ["../assets/students/jibrail.jpg"] },
+      { name: "Lucas", result: "21 million views", images: ["../assets/students/lucas.jpg"] },
+      { name: "Shani", result: "$6,691 in a single day", images: ["../assets/students/shani.jpg"] },
+      { name: "Ripley", result: "$258 per day", images: ["../assets/students/ripley.jpg"] },
+    ];
+
+    // ---- Countdown + date label ----
+    const countdownEl = document.getElementById("countdown");
+    const eventTimeEl = document.getElementById("event-time");
+    function tick() {
+      const event = nextEvent();
+      eventTimeEl.textContent = eventLabel(event);
+      const diff = Math.max(0, event - Date.now());
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      countdownEl.textContent = diff === 0 ? "now" : d > 0 ? `${d}d ${h}h` : `${h}h ${m}m`;
+    }
+    tick();
+    setInterval(tick, 30000);
+
+    // ---- Fit headline lines ----
+    // Shrinks each .fit block (from its CSS size) so its widest .line fits on one row
+    function fitLines() {
+      document.querySelectorAll(".fit").forEach(el => {
+        el.style.fontSize = "";
+        const base = parseFloat(getComputedStyle(el).fontSize);
+        const widest = Math.max(...[...el.querySelectorAll(".line")].map(l => l.getBoundingClientRect().width));
+        if (widest > el.clientWidth) el.style.fontSize = `${Math.floor(base * el.clientWidth / widest * 10) / 10}px`;
+      });
+    }
+    fitLines();
+    document.fonts.ready.then(fitLines);
+    window.addEventListener("resize", fitLines);
+
+    // ---- Stars ----
+    const stars = document.getElementById("stars");
+    for (let i = 0; i < 70; i++) {
+      const s = document.createElement("span");
+      const size = Math.random() < 0.85 ? 2 : 4;
+      s.className = "star";
+      s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;opacity:${0.25 + Math.random() * 0.6};${size === 4 ? "border-radius:0;" : ""}`;
+      stars.appendChild(s);
+    }
+
+    // ---- Carousel ----
+    const track = document.getElementById("track");
+    track.innerHTML = SLIDES.map((s, i) => `
+      <article class="slide">
+        <div class="slide-head"><strong>${s.name}</strong> · ${s.result}</div>
+        ${!s.images ? `
+        <div class="slide-img ph">Screenshot / proof image</div>` : s.images.length > 1 ? `
+        <div class="slide-img stack">
+          <img class="stack-back" src="${s.images[0]}" alt="${s.name} result screenshot" loading="lazy" />
+          <img class="stack-front" src="${s.images[1]}" alt="${s.name} result screenshot" loading="lazy" />
+          <button class="expand expand-top" data-slide="${i}" aria-label="View full size">↗</button>
+        </div>` : `
+        <div class="slide-img single">
+          <img src="${s.images[0]}" alt="${s.name} result screenshot" loading="lazy" />
+          <button class="expand" data-slide="${i}" aria-label="View full size">↗</button>
+        </div>`}
+      </article>`).join("");
+
+    // ---- Lightbox: full-size screenshots ----
+    const lightbox = document.getElementById("lightbox");
+    const lightboxInner = lightbox.querySelector(".lightbox-inner");
+    track.addEventListener("click", e => {
+      const btn = e.target.closest("[data-slide]");
+      if (!btn) return;
+      lightboxInner.innerHTML = SLIDES[btn.dataset.slide].images.map(src => `<img src="${src}" alt="" />`).join("");
+      lightbox.hidden = false;
+      document.body.style.overflow = "hidden";
+    });
+    function closeLightbox() {
+      lightbox.hidden = true;
+      document.body.style.overflow = "";
+    }
+    lightbox.addEventListener("click", e => { if (e.target.tagName !== "IMG") closeLightbox(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && !lightbox.hidden) closeLightbox(); });
+
+    const slides = [...track.children];
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    const counter = document.getElementById("counter");
+    const bar = document.getElementById("progress-bar");
+
+    function currentIndex() {
+      const step = slides[1].offsetLeft - slides[0].offsetLeft;
+      return Math.round(track.scrollLeft / step);
+    }
+    function update() {
+      const i = currentIndex();
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      counter.textContent = `${Math.min(i + 1, slides.length)} / ${slides.length}`;
+      prev.disabled = i <= 0;
+      next.disabled = atEnd;
+      const max = track.scrollWidth - track.clientWidth;
+      bar.style.left = `${max ? (track.scrollLeft / max) * 85 : 0}%`;
+    }
+    function go(dir) {
+      const i = Math.max(0, Math.min(slides.length - 1, currentIndex() + dir));
+      track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: "smooth" });
+    }
+    prev.addEventListener("click", () => go(-1));
+    next.addEventListener("click", () => go(1));
+    track.addEventListener("scroll", update, { passive: true });
+    update();
+
+    // ---- Register buttons → scroll up to the form ----
+    const form = document.getElementById("reg-form");
+    document.querySelectorAll(".js-register").forEach(btn => {
+      btn.addEventListener("click", e => {
+        e.preventDefault();
+        document.getElementById("register").scrollIntoView({ behavior: "smooth", block: "start" });
+        form.elements.name.focus({ preventScroll: true });
+      });
+    });
+
+    // ---- Form ----
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const msg = document.getElementById("form-msg");
+      msg.style.display = "block";
+      if (!form.elements.name.value.trim() || !/^\S+@\S+\.\S+$/.test(form.elements.email.value)) {
+        msg.style.color = "#ff8a8a";
+        msg.textContent = "Please enter your name and a valid email.";
+        return;
+      }
+      const els = form.elements;
+      const phone = els.phone.value.trim();
+      const lead = {
+        Name: els.name.value.trim(),
+        Email: els.email.value.trim(),
+        Phone: phone ? `${els.country_code.value} ${phone}` : "",
+      };
+      saveLead(lead);
+      sendToSheet("Registrations", { ...lead, "Event date": eventLabel(nextEvent()), ...utmParams() });
+
+      const firstName = lead.Name.split(/\s+/)[0];
+      // Opened as a local file there's no server to resolve the folder's index.html
+      const page = location.protocol === "file:" ? "../regcomplete/index.html" : "../regcomplete/";
+      window.location.href = `${page}?name=${encodeURIComponent(firstName)}`;
+    });
+  </script>
+</body>
+</html>
