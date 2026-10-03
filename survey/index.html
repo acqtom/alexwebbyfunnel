@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online masterclass</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/funnel.css" />
+  <style>
+    .step { margin-top: 30px; animation: fade-in .35s ease; }
+    @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } }
+
+    h1 { font-size: 27px; font-weight: 800; line-height: 1.28; letter-spacing: -0.4px; max-width: 420px; }
+    h1.wide { max-width: none; }
+    .note { margin-top: 8px; font-size: 14px; line-height: 1.5; color: var(--text-dim); }
+
+    /* ---------- Answer cards ---------- */
+    .options { display: grid; gap: 12px; margin-top: 20px; }
+    .option {
+      display: flex; align-items: center; gap: 14px;
+      width: 100%; min-height: 76px; padding: 14px 18px 14px 16px;
+      background: var(--card); text-align: left;
+      border: 1px solid var(--card-border); border-radius: 14px;
+      font-size: 15px; line-height: 1.4;
+      transition: border-color .15s, background .15s;
+    }
+    .option:hover { border-color: rgba(255,255,255,.45); }
+    .option[aria-checked="true"] { border-color: var(--accent); background: #26324a; }
+    .option-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border: 1px solid var(--card-border); border-radius: 9px;
+      color: var(--accent);
+    }
+    .option-icon svg { width: 18px; height: 18px; }
+    .option-label { flex: 1; }
+    .check {
+      width: 22px; height: 22px; flex-shrink: 0;
+      border: 1.5px solid rgba(255,255,255,.6); border-radius: 50%;
+      display: grid; place-items: center;
+      transition: background .15s, border-color .15s;
+    }
+    .multi .check { border-radius: 5px; width: 20px; height: 20px; }
+    .option[aria-checked="true"] .check { background: var(--accent); border-color: var(--accent); }
+    .option[aria-checked="true"] .check::after {
+      content: ""; width: 9px; height: 5px; margin-top: -2px;
+      border-left: 2px solid #1b222c; border-bottom: 2px solid #1b222c;
+      transform: rotate(-45deg);
+    }
+
+    /* ---------- Testimonial step ---------- */
+    .proof {
+      margin-top: 20px; padding: 18px;
+      background: var(--card); border: 1px solid rgba(255,255,255,.4); border-radius: 18px;
+    }
+    .proof-head { display: flex; gap: 14px; align-items: flex-start; min-height: 58px; }
+    .avatar {
+      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #3b4a66, #5a3f7a);
+      display: grid; place-items: center; font-weight: 700; font-size: 18px;
+    }
+    .proof-name { font-weight: 700; font-size: 16px; }
+    .proof-text { font-size: 14px; line-height: 1.5; color: var(--text-dim); margin-top: 3px; }
+    .proof-img {
+      margin-top: 14px; height: 340px;
+      background: #0b0d11; border: 1px solid rgba(255,255,255,.18); border-radius: 12px;
+      overflow: hidden;
+    }
+    .proof-img img { width: 100%; height: 100%; object-fit: contain; }
+    .proof-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+    .dots { display: flex; gap: 10px; padding-left: 4px; }
+    .dots span { width: 6px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.35); transition: width .2s, background .2s; }
+    .dots span.on { width: 18px; background: var(--accent); }
+    .arrows { display: flex; gap: 10px; }
+    .nav-btn {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: transparent; border: 1px solid rgba(255,255,255,.4);
+      display: grid; place-items: center;
+    }
+    .nav-btn:disabled { opacity: .35; cursor: default; }
+
+    /* ---------- Done ---------- */
+    .done { text-align: center; }
+    .done h1 { max-width: none; font-size: 32px; }
+    .done .note { font-size: 15px; max-width: 440px; margin: 14px auto 0; }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 23px; }
+      .option { min-height: 68px; font-size: 14px; }
+      .proof-img { height: 260px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="hero">
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="sparkle" style="left:18%;top:22%" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div id="step"></div>
+
+      <button class="btn-primary" id="continue" disabled>Continue <span aria-hidden="true">→</span></button>
+
+      <div class="starts-wrap" id="starts">
+        <div class="starts"><span class="dot"></span>Free class: starts in...</div>
+        <div class="countdown">
+          <div class="unit"><div class="unit-num" id="cd-d">00</div><div class="unit-label">days</div></div>
+          <div class="unit"><div class="unit-num" id="cd-h">00</div><div class="unit-label">hours</div></div>
+          <div class="unit"><div class="unit-num" id="cd-m">00</div><div class="unit-label">min</div></div>
+          <div class="unit"><div class="unit-num" id="cd-s">00</div><div class="unit-label">sec</div></div>
+        </div>
+        <p class="event-time" id="event-time"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/event.js"></script>
+  <script src="../assets/funnel.js"></script>
+  <script>
+    // ---- Icons (inline SVG, stroke = currentColor) ----
+    const svg = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+    const ICONS = {
+      sprout: svg('<path d="M12 21v-9M12 12C12 8 9 5 4 5c0 4 3 7 8 7zM12 12c0-3 2.5-6 7-6 0 3.5-2.5 6-7 6z"/>'),
+      trend: svg('<path d="m3 17 6-6 4 4 8-8M15 7h6v6"/>'),
+      star: svg('<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/>'),
+      crown: svg('<path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>'),
+      noVideo: svg('<path d="M2 2l20 20M10.7 6H14a2 2 0 0 1 2 2v3.3l1 1L22 8v8M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/>'),
+      video: svg('<path d="m22 8-6 4 6 4zM2 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/>'),
+      flame: svg('<path d="M12 22c4 0 7-2.8 7-7 0-4-3-6.5-4-10-2 1.5-3 3.5-3 5.5C10.5 9 9.5 8 9 6.5 6.5 9 5 11.5 5 15c0 4.2 3 7 7 7z"/>'),
+      camera: svg('<path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/>'),
+      pause: svg('<path d="M9 5v14M15 5v14"/>'),
+      play: svg('<rect x="2" y="4" width="20" height="16" rx="4"/><path d="m10 9 5 3-5 3z"/>'),
+      dollar: svg('<path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>'),
+      rocket: svg('<path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2M14.5 4.5C17 2 22 2 22 2s0 5-2.5 7.5L12 17l-5-5zM9 12H4l3-4h5M12 15v5l4-3v-5"/>'),
+      gear: svg('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>'),
+      list: svg('<path d="M9 6h12M9 12h12M9 18h12M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>'),
+      hourglass: svg('<path d="M6 2h12M6 22h12M7 2c0 5 10 5 10 10S7 17 7 22M17 2c0 5-10 5-10 10s10 5 10 10"/>'),
+      search: svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>'),
+      person: svg('<circle cx="12" cy="7" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>'),
+      laptop: svg('<rect x="4" y="5" width="16" height="11" rx="1"/><path d="M2 19h20"/>'),
+      building: svg('<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/>'),
+      couch: svg('<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3M2 13a2 2 0 0 1 4 0v2h12v-2a2 2 0 0 1 4 0v5H2zM5 18v2M19 18v2"/>'),
+      briefcase: svg('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/>'),
+      ban: svg('<circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/>'),
+      yes: svg('<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>'),
+      no: svg('<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>'),
+    };
+
+    // ---- Survey steps: edit questions and answers here ----
+    // type "single" = pick one, "multi" = pick any, "proof" = testimonial carousel
+    const STEPS = [
+      { id: "subscribers", progress: 69, type: "single",
+        question: "How many subscribers do you have across all your YouTube channels?",
+        options: [["sprout", "0 – 1,000 subscribers"], ["trend", "1,000 – 10,000 subscribers"], ["star", "10,000 – 100,000 subscribers"], ["crown", "100,000+ subscribers"]] },
+      { id: "uploaded", progress: 71, type: "single",
+        question: "Have you uploaded any videos to YouTube yet?",
+        options: [["noVideo", "No, I haven't uploaded anything yet."], ["video", "Yes, I've uploaded at least one video."]] },
+      { id: "per_week", progress: 74, type: "single",
+        question: "How many videos are you uploading each week right now?",
+        options: [["flame", "4+ a week, I'm consistent"], ["camera", "1–3 videos a week"], ["pause", "0 a week, I'm not uploading right now"]] },
+      { id: "proof", progress: 76, type: "proof",
+        question: "You're in the right place.",
+        note: "Here are a few students who joined this same workshop and went on to build a real YouTube income with faceless channels:",
+        slides: [
+          { name: "Felix", text: "$12k USD / month from his faceless channels", image: "../assets/felix-revenue.jpg" },
+          { name: "Gabriel", text: "$7.9k / month", image: "../assets/students/gabriel.jpg" },
+          { name: "Shani", text: "$6,691 in a single day", image: "../assets/students/shani.jpg" },
+        ] },
+      { id: "help_with", progress: 78, type: "multi",
+        question: "What do you want the MOST help with right now?",
+        note: "Select all that apply",
+        options: [["play", "Launching my first faceless channel"], ["dollar", "Getting monetized in the YouTube Partner Program"], ["rocket", "Scaling a channel that's already growing"], ["gear", "Automating my channel with editors and systems"]] },
+      { id: "priority", progress: 81, type: "single",
+        question: "How much of a priority is building a YouTube income for you right now?",
+        options: [["flame", "I'm ready to go all-in ASAP"], ["list", "It's in my top 3 priorities and I'm working on it"], ["hourglass", "I want it, but it's not a priority yet"], ["search", "I'm just exploring the idea for now"]] },
+      { id: "job", progress: 83, type: "single",
+        question: "Do you currently have a job?",
+        options: [["person", "Yes, I have a job"], ["laptop", "I'm a freelancer"], ["building", "I own a business"], ["couch", "No, I don't have a job"]] },
+      { id: "income_goal", progress: 85, type: "single",
+        question: "How much would it take each month to replace your current income?",
+        options: [["sprout", "$0 – $1,000 / month"], ["trend", "$1,000 – $5,000 / month"], ["briefcase", "$5,000 – $10,000 / month"], ["crown", "$10,000+ / month"]] },
+      { id: "budget", progress: 87, type: "single", wide: true,
+        question: "Do you have a budget to invest in tools, editors, or coaching to fast-track your channel?",
+        note: "Your answers are confidential and only used to tailor a plan to your situation.",
+        options: [["ban", "No, it's not something I'd invest in right now"], ["sprout", "Yes, a small budget: $100–$300"], ["trend", "Yes, a medium budget: $300–$1,000"], ["crown", "Yes, it's my MAIN priority: $1,000+"]] },
+      { id: "bought_course", progress: 90, type: "single",
+        question: "Have you ever bought an online program or course?",
+        options: [["yes", "Yes"], ["no", "No"]] },
+    ];
+
+    // ---- Survey engine ----
+    const stepEl = document.getElementById("step");
+    const continueBtn = document.getElementById("continue");
+    const answers = {};
+    let index = 0;
+
+    function renderStep() {
+      const step = STEPS[index];
+      setProgress(step.progress);
+      continueBtn.disabled = step.type !== "proof";
+      continueBtn.innerHTML = `${index === STEPS.length - 1 ? "Finish" : "Continue"} <span aria-hidden="true">→</span>`;
+
+      const head = `
+        <h1 class="${step.wide ? "wide" : ""}">${step.question}</h1>
+        ${step.note ? `<p class="note">${step.note}</p>` : ""}`;
+
+      if (step.type === "proof") {
+        stepEl.innerHTML = `<section class="step">${head}<div class="proof" id="proof"></div></section>`;
+        renderProof(step.slides, 0);
+        return;
+      }
+
+      stepEl.innerHTML = `
+        <section class="step">
+          ${head}
+          <div class="options ${step.type}" role="${step.type === "multi" ? "group" : "radiogroup"}">
+            ${step.options.map(([icon, label], i) => `
+              <button class="option" role="${step.type === "multi" ? "checkbox" : "radio"}" aria-checked="false" data-i="${i}">
+                <span class="option-icon">${ICONS[icon]}</span>
+                <span class="option-label">${label}</span>
+                <span class="check"></span>
+              </button>`).join("")}
+          </div>
+        </section>`;
+
+      stepEl.querySelectorAll(".option").forEach(opt => {
+        opt.addEventListener("click", () => {
+          if (step.type === "single") {
+            stepEl.querySelectorAll(".option").forEach(o => o.setAttribute("aria-checked", "false"));
+            opt.setAttribute("aria-checked", "true");
+          } else {
+            opt.setAttribute("aria-checked", opt.getAttribute("aria-checked") === "true" ? "false" : "true");
+          }
+          const picked = [...stepEl.querySelectorAll('.option[aria-checked="true"]')].map(o => step.options[o.dataset.i][1]);
+          answers[step.id] = step.type === "single" ? picked[0] : picked;
+          continueBtn.disabled = picked.length === 0;
+        });
+      });
+    }
+
+    function renderProof(slides, i) {
+      const s = slides[i];
+      document.getElementById("proof").innerHTML = `
+        <div class="proof-head">
+          <div class="avatar">${s.name.charAt(0)}</div>
+          <div><div class="proof-name">${s.name}</div><div class="proof-text">${s.text}</div></div>
+        </div>
+        <div class="proof-img"><img src="${s.image}" alt="${s.name} result screenshot" /></div>
+        <div class="proof-nav">
+          <div class="dots">${slides.map((_, j) => `<span class="${j === i ? "on" : ""}"></span>`).join("")}</div>
+          <div class="arrows">
+            <button class="nav-btn" id="proof-prev" aria-label="Previous" ${i === 0 ? "disabled" : ""}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="nav-btn" id="proof-next" aria-label="Next" ${i === slides.length - 1 ? "disabled" : ""}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>`;
+      document.getElementById("proof-prev").onclick = () => renderProof(slides, i - 1);
+      document.getElementById("proof-next").onclick = () => renderProof(slides, i + 1);
+    }
+
+    function finish() {
+      // TODO: send `answers` (plus the person's email/name) to your CRM here
+      console.log("Survey answers", answers);
+      setProgress(100);
+      continueBtn.hidden = true;
+      const name = firstName();
+      stepEl.innerHTML = `
+        <section class="step done">
+          <h1>${name ? `${name}, you're` : "You're"} <span class="marker">all set!</span></h1>
+          <p class="note">Your spot is saved. Keep an eye on your inbox for the joining link and your <strong>[free bonus]</strong>.</p>
+        </section>`;
+    }
+
+    continueBtn.addEventListener("click", () => {
+      if (index === STEPS.length - 1) return finish();
+      index++;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    renderStep();
+  </script>
+</body>
+</html>

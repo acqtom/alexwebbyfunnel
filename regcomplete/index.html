@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online masterclass</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/funnel.css" />
+  <style>
+    /* ---------- Warning bar ---------- */
+    .warning {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--red);
+      text-align: center; padding: 8px 16px;
+      font-size: 13px; font-weight: 700; letter-spacing: .3px;
+      box-shadow: 0 1px 0 rgba(0,0,0,.25);
+    }
+    .hero { min-height: calc(100vh - 34px); }
+    .container { text-align: center; }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 36px; font-weight: 800; line-height: 1.22; letter-spacing: -0.6px;
+    }
+    .sub {
+      margin: 18px auto 0; max-width: 440px;
+      font-size: 15px; line-height: 1.6; color: var(--text-dim);
+    }
+    .sub strong { color: #fff; }
+
+    /* ---------- Vertical video ---------- */
+    .video {
+      position: relative;
+      width: 238px; aspect-ratio: 9 / 16; max-height: 424px;
+      margin: 26px auto 0;
+      border-radius: 10px; overflow: hidden;
+      border: 2px solid rgba(255,255,255,.9);
+      box-shadow: 0 14px 40px rgba(0,0,0,.45);
+    }
+    .ph {
+      width: 100%; height: 100%;
+      background:
+        repeating-linear-gradient(45deg, transparent 0 10px, rgba(255,255,255,.03) 10px 20px),
+        var(--placeholder);
+      display: grid; place-items: center;
+      color: var(--text-faint); font-size: 13px; padding: 12px;
+    }
+    .video-bar {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 34px; background: rgba(84, 20, 220, .92);
+      display: flex; align-items: center; gap: 9px; padding: 0 10px;
+      font-size: 13px; font-weight: 600;
+    }
+    .video-bar svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .video-track { flex: 1; height: 2px; background: rgba(255,255,255,.55); position: relative; }
+    .video-track::before {
+      content: ""; position: absolute; left: 0; top: 50%;
+      width: 7px; height: 7px; border-radius: 50%; background: #fff;
+      transform: translate(-50%, -50%);
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 29px; }
+      .sub { font-size: 14px; }
+      .video { width: 210px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="warning">DO NOT CLOSE THIS PAGE!</div>
+
+  <main class="hero">
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="sparkle" style="left:22%;top:20%" aria-hidden="true"></div>
+    <div class="sparkle" style="left:63%;top:30%;width:22px;height:22px" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="progress" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <h1>
+        <span id="greeting">Your registration</span><br />
+        is <span class="marker">almost complete...</span>
+      </h1>
+      <p class="sub">
+        Watch the short video below to finish your registration, then fill out the quick survey to unlock your
+        <strong>[free bonus]</strong> sent to your email...
+      </p>
+
+      <div class="video">
+        <div class="ph">Vertical video placeholder (9:16)</div>
+        <div class="video-bar">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg>
+          <span>0:00</span>
+          <div class="video-track"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><rect x="7" y="8" width="10" height="8" rx="1"/></svg>
+        </div>
+      </div>
+
+      <a class="btn-primary" id="continue" href="../survey/">Continue <span aria-hidden="true">→</span></a>
+
+      <div class="starts-wrap">
+        <div class="starts"><span class="dot"></span>Free class: starts in...</div>
+        <div class="countdown">
+          <div class="unit"><div class="unit-num" id="cd-d">00</div><div class="unit-label">days</div></div>
+          <div class="unit"><div class="unit-num" id="cd-h">00</div><div class="unit-label">hours</div></div>
+          <div class="unit"><div class="unit-num" id="cd-m">00</div><div class="unit-label">minutes</div></div>
+          <div class="unit"><div class="unit-num" id="cd-s">00</div><div class="unit-label">seconds</div></div>
+        </div>
+        <p class="event-time" id="event-time"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/event.js"></script>
+  <script src="../assets/funnel.js"></script>
+  <script>
+    const name = firstName();
+    if (name) document.getElementById("greeting").textContent = `${name}, your registration`;
+    document.getElementById("continue").href = funnelUrl("survey", name ? { name } : null);
+    setProgress(67);
+  </script>
+</body>
+</html>
