@@ -80,7 +80,7 @@
       opacity: .7;
     }
     .sparkle {
-      position: absolute; left: 22%; top: 13%;
+      position: absolute; left: 9%; top: 13%;
       width: 34px; height: 34px; pointer-events: none;
     }
     .sparkle::before, .sparkle::after {
@@ -98,10 +98,11 @@
 
     /* ---------- Headline ---------- */
     .headline { padding: 34px 14px 0; }
-    .eyebrow { font-size: 19px; color: var(--text-dim); margin-bottom: 8px; }
     h1 {
-      font-size: 36px; font-weight: 800; line-height: 1.28; letter-spacing: -0.8px;
+      font-size: 30px; font-weight: 800; line-height: 1.3; letter-spacing: -0.6px;
     }
+    .nowrap { white-space: nowrap; }
+    .subhead { margin-top: 16px; font-size: 17px; line-height: 1.6; color: var(--text-dim); }
     .marker {
       position: relative; display: inline; color: #111;
       background: var(--yellow);
@@ -347,8 +348,9 @@
       .topbar-sub { font-size: 12px; }
       .btn-pill { padding: 9px 18px; font-size: 15px; }
       .headline, .host { padding-left: 0; padding-right: 0; }
-      .eyebrow { font-size: 17px; }
-      h1 { font-size: 29px; }
+      .subhead { font-size: 15px; }
+      .sparkle { display: none; }
+      h1 { font-size: 23px; }
       .host { align-items: flex-start; }
       .host-photo { width: 64px; height: 80px; }
       /* On phones the host line wraps at a readable size instead of shrinking */
@@ -390,11 +392,16 @@
 
       <!-- Headline -->
       <section class="headline">
-        <p class="eyebrow">Get the complete guide to</p>
-        <h1 class="fit">
-          <span class="line">Build a <span class="marker">full-time online career</span></span>
-          <span class="line"><span class="gradient-text">from YouTube Faceless Automation</span></span>
+        <h1>
+          <span class="marker">The 90-Day Faceless Channel Speedrun:</span>
+          How Busy Professionals Are Building <span class="gradient-text"><span class="nowrap">$10-15K/Month</span> YouTube Income</span>
+          in 1 Hour a Day, Without Quitting Their Job, Or Showing Their Face Online
         </h1>
+        <p class="subhead">
+          Join Alex LIVE for a free training where he reveals the exact system his students use to launch and scale
+          faceless YouTube channels in 1 hour a day, so you can build a second income without trading away your career
+          or your evenings.
+        </p>
       </section>
 
       <!-- Host + social proof -->
@@ -402,7 +409,7 @@
         <img class="host-photo" src="../assets/host.png" alt="Host" />
         <div class="host-text">
           <p class="host-copy fit">
-            <span class="line">...with a 19 year-old who grew <strong>8x monetized accounts to over 400M views</strong></span>
+            <span class="line">...with Alex, who grew <strong>8x monetized accounts to over 400M views</strong></span>
             <em class="line">(and $300k+/year in passive income)</em>
           </p>
           <div class="stats">
