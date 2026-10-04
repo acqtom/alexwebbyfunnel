@@ -643,21 +643,60 @@
     });
 
     // ---- Form ----
-    form.addEventListener("submit", e => {
+    // Local previews have no /api; WebinarJam registration only runs on the live site
+    const IS_LOCAL = location.protocol === "file:" || ["localhost", "127.0.0.1"].includes(location.hostname);
+
+    async function registerWithWebinarJam(els) {
+      if (IS_LOCAL) return {};
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: els.name.value.trim(),
+          email: els.email.value.trim(),
+          countryCode: els.country_code.value,
+          phone: els.phone.value.trim(),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+      return data;
+    }
+
+    form.addEventListener("submit", async e => {
       e.preventDefault();
       const msg = document.getElementById("form-msg");
-      msg.style.display = "block";
-      if (!form.elements.name.value.trim() || !/^\S+@\S+\.\S+$/.test(form.elements.email.value)) {
+      const btn = form.querySelector("button[type=submit]");
+      const showError = text => {
+        msg.style.display = "block";
         msg.style.color = "#ff8a8a";
-        msg.textContent = "Please enter your name and a valid email.";
-        return;
-      }
+        msg.textContent = text;
+      };
       const els = form.elements;
+      if (!els.name.value.trim() || !/^\S+@\S+\.\S+$/.test(els.email.value)) {
+        return showError("Please enter your name and a valid email.");
+      }
+
+      const btnHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.textContent = "Registering…";
+      msg.style.display = "none";
+
+      let registration;
+      try {
+        registration = await registerWithWebinarJam(els);
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = btnHtml;
+        return showError(err.message);
+      }
+
       const phone = els.phone.value.trim();
       const lead = {
         Name: els.name.value.trim(),
         Email: els.email.value.trim(),
         Phone: phone ? `${els.country_code.value} ${phone}` : "",
+        "Live room": registration.liveRoomUrl || "",
       };
       saveLead(lead);
       sendToSheet("Registrations", { ...lead, "Event date": eventLabel(nextEvent()), ...utmParams() });
