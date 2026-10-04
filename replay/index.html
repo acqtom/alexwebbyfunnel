@@ -104,6 +104,32 @@
   <script src="../assets/funnel.js"></script>
   <!-- Replay player (vturb) -->
   <script type="text/javascript">
+    // vturb's saved settings store the video ratio as 56.25 where the player expects
+    // a fraction (0.5625) and multiplies by 100, so it renders a 5625%-tall black box.
+    // They also mark this 16:9 video as vertical (400px wide). Catch the settings as the
+    // loader hands them over and normalise them from the video's own ratio.
+    (function () {
+      var el = document.getElementById("vid-6abec4ba60218bc6eafaa4c6");
+      var vturbStart;
+      Object.defineProperty(el, "start", {
+        configurable: true,
+        set: function (fn) { vturbStart = fn; },
+        get: function () {
+          return function (config) {
+            var raw = config.video && config.video.aspectRatio;
+            var pct = !raw ? 56.25 : raw > 5 ? raw : raw * 100; // height as % of width
+            config.video.aspectRatio = pct / 100;
+            config.playerInit.aspectRatio = pct;
+            config.playerInit.verticalVideo = pct > 100;
+            if (pct <= 100) el.style.maxWidth = "";
+            var thumb = el.querySelector(".thumbnail");
+            if (thumb) thumb.style.padding = pct + "% 0 0";
+            return vturbStart.call(el, config);
+          };
+        },
+      });
+    })();
+
     var s = document.createElement("script");
     s.src = "https://scripts.converteai.net/3b9d5e0c-cdfa-409b-9c8d-b0d07c3dcb14/players/6abec4ba60218bc6eafaa4c6/v4/player.js";
     s.async = true;
