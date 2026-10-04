@@ -1,7 +1,7 @@
 // Shared by the survey result pages. Load after event.js and funnel.js.
 
 // ---- Links: fill these in ----
-const COMMUNITY_URL = "#"; // e.g. your Discord / Skool invite link
+const COMMUNITY_URL = "https://chat.whatsapp.com/GcUyaEb48lp8vp1GnOfkYj?mode=gi_t";
 const BOOKING_URL = "#";   // e.g. your Calendly link (qualified page only)
 
 const EVENT_TITLE = "Free YouTube Faceless Automation Masterclass";
