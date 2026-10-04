@@ -342,6 +342,18 @@
     }
     .vb-icon { width: 18px; height: 18px; }
 
+    /* ---------- Problem + what you'll learn ---------- */
+    .problem-card {
+      margin-top: 44px; padding: 26px 26px 22px;
+      background: rgba(30, 37, 48, .7); border: 1px solid rgba(255,255,255,.14); border-radius: 16px;
+    }
+    .problem-card h3, .learn h3 { font-size: 21px; font-weight: 800; line-height: 1.35; }
+    .problem-card p, .learn > p { margin-top: 14px; font-size: 15px; line-height: 1.65; color: var(--text-dim); }
+    .learn { margin-top: 40px; }
+    .learn-list { list-style: none; margin-top: 18px; display: grid; gap: 14px; }
+    .learn-list li { display: flex; gap: 14px; align-items: flex-start; font-size: 15px; line-height: 1.5; }
+    .tick { width: 26px; height: 26px; flex-shrink: 0; margin-top: -2px; }
+
     .page-end { height: 60px; }
 
     /* ---------- Mobile ---------- */
@@ -366,6 +378,9 @@
       .section-title { padding-right: 0; font-size: 19px; }
       .slide { flex-basis: 82%; }
       .video-title { font-size: 18px; }
+      .problem-card { padding: 20px 16px 16px; }
+      .problem-card h3, .learn h3 { font-size: 18px; }
+      .problem-card p, .learn > p, .learn-list li { font-size: 14px; }
       .play { width: 76px; height: 50px; }
     }
   </style>
@@ -507,6 +522,29 @@
           <svg class="vb-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><rect x="7" y="8" width="10" height="8" rx="1"/></svg>
         </div>
       </div>
+
+      <div class="cta-block">
+        <a class="btn-primary js-register" href="#register">Register for free</a>
+      </div>
+
+      <!-- Problem + what you'll learn -->
+      <section class="problem-card">
+        <h3>Your career pays well. It just doesn't pay you enough to stop.</h3>
+        <p>Your salary goes up, and so do your hours. Your savings sit in a bank account or an index fund, barely moving. Every "side hustle" you've looked at wants your evenings, your weekends, or your face on camera. And the idea of going full time on something feels like a gamble you can't afford to take.</p>
+        <p>This isn't a "you" problem. It's a model problem. And there's a better one.</p>
+      </section>
+
+      <section class="learn">
+        <h3>What You'll Learn:</h3>
+        <p>In this free live training, Alex will break down all 5 stages of the 90-Day Faceless Channel Speedrun, the exact system his students use to build YouTube income alongside demanding full-time careers.</p>
+        <ul class="learn-list">
+          <li><svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="m7 12.5 3.2 3.2L17 9" fill="none" stroke="#0b1a10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>How to launch a channel without ever filming, editing, or showing your face</span></li>
+          <li><svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="m7 12.5 3.2 3.2L17 9" fill="none" stroke="#0b1a10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>How to pick a niche where advertisers pay top dollar, so every view is worth more from day one</span></li>
+          <li><svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="m7 12.5 3.2 3.2L17 9" fill="none" stroke="#0b1a10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>How to build a small, reliable team that runs production while you work your job</span></li>
+          <li><svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="m7 12.5 3.2 3.2L17 9" fill="none" stroke="#0b1a10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>How to manage the whole channel in about 1 hour a day, without it taking over your evenings</span></li>
+          <li><svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="m7 12.5 3.2 3.2L17 9" fill="none" stroke="#0b1a10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>How to stack 10-15k/month passively in 90 days, and the exact point where going full time becomes an option instead of a risk</span></li>
+        </ul>
+      </section>
 
       <div class="cta-block">
         <a class="btn-primary js-register" href="#register">Register for free</a>
