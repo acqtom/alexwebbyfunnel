@@ -4,9 +4,10 @@
 const COMMUNITY_URL = "https://chat.whatsapp.com/GcUyaEb48lp8vp1GnOfkYj?mode=gi_t";
 const BOOKING_URL = "#";   // e.g. your Calendly link (qualified page only)
 
-const EVENT_TITLE = "Free YouTube Faceless Automation Masterclass";
-const EVENT_MINUTES = 90;
-const EVENT_DETAILS = "Live masterclass. Keep an eye on your inbox for the joining link.";
+const EVENT_TITLE = "Turn Your Free Time into a High Paying Side Hustle in 2026 with Alex Liubicevas";
+const EVENT_MINUTES = 60;
+const LIVE_ROOM_URL = "https://event.webinarjam.com/4o892g/go/live/n5ly3nf5i8s0s1";
+const EVENT_DETAILS = `Join the live masterclass here: ${LIVE_ROOM_URL}`;
 
 // "Wednesday, October 7th 2026 · 4:00 PM (PT) / 7:00 PM (ET)"
 function eventWhen(ts) {
@@ -30,7 +31,8 @@ function googleCalendarUrl(start) {
     dates: `${calStamp(start)}/${calStamp(end)}`,
     details: EVENT_DETAILS,
   });
-  return `https://calendar.google.com/calendar/render?${p}`;
+  // Google expects a literal "/" between start and end
+  return `https://calendar.google.com/calendar/render?${p}`.replace("%2F", "/");
 }
 
 // .ics file for Apple Calendar / Outlook
@@ -45,6 +47,8 @@ function icsUrl(start) {
     `DTEND:${calStamp(end)}`,
     `SUMMARY:${EVENT_TITLE}`,
     `DESCRIPTION:${EVENT_DETAILS}`,
+    `LOCATION:${LIVE_ROOM_URL}`,
+    `URL:${LIVE_ROOM_URL}`,
     "BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY", `DESCRIPTION:${EVENT_TITLE}`, "END:VALARM",
     "END:VEVENT", "END:VCALENDAR",
   ].join("\r\n");
