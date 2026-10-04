@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online masterclass</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/funnel.css" />
+  <style>
+    .container { text-align: center; max-width: 720px; }
+
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 16px; font-weight: 700;
+    }
+    .brand svg { width: 30px; height: 22px; }
+
+    h1 {
+      margin: 34px auto 0; max-width: 620px;
+      font-size: 50px; font-weight: 800; line-height: 1.12; letter-spacing: -1.2px;
+    }
+    h1 em { font-style: italic; }
+    .nowrap { white-space: nowrap; }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 24px; padding: 8px 16px;
+      background: rgba(215, 38, 61, .18); border: 1px solid rgba(215, 38, 61, .55); border-radius: 999px;
+      font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+    }
+    .pill .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff4d5e; animation: pulse 1.6s ease-in-out infinite; }
+
+    .sub { margin: 18px auto 0; max-width: 470px; font-size: 17px; line-height: 1.6; color: var(--text-dim); }
+
+    /* ---------- Replay video ---------- */
+    .video {
+      position: relative; aspect-ratio: 16 / 9; margin-top: 36px;
+      border-radius: 14px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.3);
+      box-shadow: 0 18px 48px rgba(0,0,0,.5);
+    }
+    .ph {
+      width: 100%; height: 100%;
+      background:
+        repeating-linear-gradient(45deg, transparent 0 10px, rgba(255,255,255,.03) 10px 20px),
+        var(--placeholder);
+      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 16px;
+      color: var(--text-faint); font-size: 13px;
+    }
+    .play {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 100px; height: 64px; border-radius: 8px; border: 0;
+      background: rgba(84, 20, 220, .92);
+      display: grid; place-items: center;
+    }
+    .play svg { width: 26px; height: 26px; }
+
+    /* ---------- Application ---------- */
+    .apply { margin-top: 64px; }
+    .apply h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.8px; }
+    .apply p { margin: 10px auto 0; max-width: 340px; font-size: 15px; line-height: 1.55; color: var(--text-dim); }
+    .apply-embed {
+      margin-top: 26px; min-height: 560px;
+      background: var(--card); border: 1px solid var(--card-border); border-radius: 18px;
+      overflow: hidden;
+    }
+    .apply-embed .ph { min-height: 560px; align-items: center; padding: 20px; }
+
+    @media (max-width: 560px) {
+      .brand { font-size: 14px; }
+      h1 { font-size: 34px; letter-spacing: -0.6px; }
+      .sub { font-size: 15px; }
+      .play { width: 76px; height: 50px; }
+      .apply { margin-top: 48px; }
+      .apply h2 { font-size: 30px; }
+      .apply-embed, .apply-embed .ph { min-height: 480px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="hero">
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="sparkle" style="left:12%;top:14%" aria-hidden="true"></div>
+    <div class="sparkle" style="left:84%;top:30%;width:22px;height:22px" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="brand">
+        <svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#ff0000"/><path d="M11 5.5v9l8-4.5z" fill="#fff"/></svg>
+        6-Figure Channel Launchpad
+      </div>
+
+      <h1>Turn Your <span class="marker"><em>Free Time</em></span> Into A High-Paying Side Hustle <span class="nowrap">In 2026</span></h1>
+
+      <div class="pill"><span class="live-dot"></span>Live masterclass replay</div>
+
+      <p class="sub">
+        The step-by-step roadmap to build a six-figure faceless YouTube channel from anywhere, even if
+        you've never posted a video in your life.
+      </p>
+
+      <!-- TODO: replace with the replay video embed -->
+      <div class="video">
+        <div class="ph">Replay video placeholder (16:9)</div>
+        <button class="play" aria-label="Play replay">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg>
+        </button>
+      </div>
+
+      <section class="apply" id="apply">
+        <h2>Apply For A Spot</h2>
+        <p>Watched the replay? Fill out the short application below to see if you're a fit.</p>
+        <!-- TODO: replace with the application form embed (e.g. Typeform) -->
+        <div class="apply-embed">
+          <div class="ph">Application form embed placeholder</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="../assets/event.js"></script>
+  <script src="../assets/funnel.js"></script>
+</body>
+</html>
