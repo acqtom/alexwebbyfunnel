@@ -40,17 +40,25 @@
       border: 1px solid rgba(255,255,255,.3);
       box-shadow: 0 18px 48px rgba(0,0,0,.5);
     }
+    /* vturb caps the player at 400px wide; let it fill the column.
+       Its aspect ratio comes from the vturb dashboard (must be 56.25 for 16:9). */
+    .video vturb-smartplayer { max-width: 100% !important; }
+
     /* ---------- Application ---------- */
     .apply { margin-top: 64px; }
     .apply h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.8px; }
     .apply p { margin: 10px auto 0; max-width: 340px; font-size: 15px; line-height: 1.55; color: var(--text-dim); }
     .apply p { max-width: 480px; }
+    /* Wider than the text column, up to 960px; Typeform fills the whole card */
     .apply-embed {
+      position: relative; left: 50%; transform: translateX(-50%);
+      width: min(960px, calc(100vw - 32px));
       margin-top: 26px; text-align: left;
-      background: var(--card); border: 1px solid var(--card-border); border-radius: 18px;
+      background: #fff; border: 1px solid var(--card-border); border-radius: 18px;
       overflow: hidden;
     }
-    .apply-embed [data-tf-live] { height: 620px; }
+    .apply-embed [data-tf-live] { height: 760px; }
+    .apply-embed [data-tf-widget] { height: 100% !important; }
 
     @media (max-width: 560px) {
       .brand { font-size: 14px; }
@@ -58,7 +66,7 @@
       .sub { font-size: 15px; }
       .apply { margin-top: 48px; }
       .apply h2 { font-size: 30px; }
-      .apply-embed [data-tf-live] { height: 560px; }
+      .apply-embed [data-tf-live] { height: 640px; }
     }
   </style>
 </head>
