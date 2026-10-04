@@ -34,7 +34,12 @@
     .sub { margin: 18px auto 0; max-width: 470px; font-size: 17px; line-height: 1.6; color: var(--text-dim); }
 
     /* ---------- Replay video ---------- */
-    .video { position: relative; margin-top: 36px; }
+    /* Same frame as the cards elsewhere in the funnel */
+    .video {
+      position: relative; margin-top: 36px;
+      border: 1px solid rgba(255,255,255,.3); border-radius: 14px; overflow: hidden;
+      box-shadow: 0 18px 48px rgba(0,0,0,.45), 0 0 0 4px rgba(156, 192, 255, .08);
+    }
     /* vturb caps the player at 400px wide; let it fill the column.
        Its aspect ratio comes from the vturb dashboard (must be 56.25 for 16:9). */
     .video vturb-smartplayer { max-width: 100% !important; }
